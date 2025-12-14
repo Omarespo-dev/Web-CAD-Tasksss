@@ -52,11 +52,20 @@ La terza funzione e `drawPreview` e viene usato per disegnare la preview della f
 
 L’uso di `drawShape` e `drawPreview` non erano obbligatorie, ma le ho introdotte per organizzare meglio il codice e non appesantire la funzione di render che deve solo mostrare il risultato finale.
 
+---
+
 ## 3) Funzione di Render
 
 Ho implementato una funzione `render` perche la canvas non ha memoria delle forme disegnate. Ogni volta che aggiungo una nuova figura o modifico lo stato devo ridisegnare tutto leggendo l’array `shapes`. In questo modo posso visualizzare tutte le forme gia create insieme a quella nuova o alla preview, mantenendo il disegno sempre aggiornato.
 
 ---
 
+## 3) Funzione per traddure le coordinate del mouse della finestra Browser in canvas
+
+Ho implementato una funzione getMousePosition per gestire le coordinate del mouse sulla canvas.
+Il motivo per cui l ho fatta e perche gli eventi del mouse restituiscono le coordinate rispetto alla finestra del browser, mentre il canvas e solo una porzione della pagina.
+
+Questa funzione prende l evento del mouse e restituisce le coordinate x e y relative alla canvas.
+In questo modo posso ottenere le coordinate corrette da usare nei controller del mouse, cioe negli eventi di click, movimento e rilascio.
 
 

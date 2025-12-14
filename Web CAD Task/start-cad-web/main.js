@@ -63,11 +63,26 @@ function render() {
 
 
   //Condizione per gestire la forma temporanea(preview)
-  if(tempShape){
-    drawPreview(ctx,tempShape)
+  if (tempShape) {
+    drawPreview(ctx, tempShape)
   }
+  
 }
 
+
+//Funzione per gestire le coordinate del mouse sulla canvas attraverso l evento del mouse
+function getMousePosition(e) {
+
+  //Questo metodo mi dice dove sta la canvas
+  const rect = canvas.getBoundingClientRect()
+
+  //ritorna un oggetto con le coordinate del mouse relative alla canvas
+  return {
+    x: e.clientX - rect.left,
+    y: e.clientY - rect.top
+  }
+
+}
 
 
 
