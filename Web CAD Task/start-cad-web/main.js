@@ -33,6 +33,22 @@ function drawShape(ctx, shape) {
 }
 
 
+//Funzione per Disegnare la preview mentre stiamo trascinando col mouse
+function drawPreview(ctx, shape) {
+
+  // Impostiamo lo stile grafico per la preview
+  ctx.save()
+  ctx.setLineDash([6, 4])
+  ctx.strokeStyle = "gray"
+
+  //Invochiamo la funzione drawShape che sa gia quale forma disegnare
+  drawShape(ctx, shape)
+
+  //ripristino lo stato grafico 
+  ctx.restore()
+
+}
+
 
 
 

@@ -36,6 +36,10 @@ La seconda funzione è `drawShape` e viene usata per gestire in modo più ordina
 
 L’uso di `drawShape` non era obbligatorio ma ho deciso di inserirla per centralizzare la logica e renderla più chiara. In questo modo evito di gestire i controlli direttamente nella funzione di render che si occupa di mostrare il disegno sulla canvas.
 
+La terza funzione e `drawPreview` e viene usato per disegnare la preview della forma durante il drag (trascinamento del mouse), applicando uno stile grafico diverso.
+
+
+
 ---
 
 
