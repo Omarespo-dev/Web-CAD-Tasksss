@@ -6,6 +6,28 @@ let ctx = canvas.getContext("2d");
 let shapes = [];
 
 
+//Queste variabili di stato invece gestiscono cosa sta facendo L'utente
+let currentTool = null;
+let isDrawing = false;
+let startX = 0;
+let startY = 0;
+let tempShape = null;
+
+
+//Iniziamo ad implementare le Funzioni di Disegno
+
+//Funzione per Disegnare il rettangolo dato in input un oggetto rettangolo e dare in output il disegno effettivo in pixel sulla canvas
+function drawRect(ctx, rect) {
+  return ctx.strokeRect(rect.x, rect.y, rect.width, rect.height)
+}
+
+
+
+
+
+
+
+
 
 document.getElementById("rectBtn").addEventListener("click", () => currentTool = "rectangle");
 document.getElementById("lineBtn").addEventListener("click", () => currentTool = "line");
