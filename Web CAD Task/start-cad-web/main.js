@@ -18,8 +18,20 @@ let tempShape = null;
 
 //Funzione per Disegnare il rettangolo dato in input un oggetto rettangolo e dare in output il disegno effettivo in pixel sulla canvas
 function drawRect(ctx, rect) {
-  return ctx.strokeRect(rect.x, rect.y, rect.width, rect.height)
+  ctx.strokeRect(rect.x, rect.y, rect.width, rect.height)
 }
+
+
+//Funzione per gestire quale funzione di disegno chiamare in base all oggetto(Forma) che riceviamo in input 
+function drawShape(ctx, shape) {
+
+  //Gestiamo la forma che riceviamo in input se e rettangolo la passiamo alla funzione specifica
+  if (shape.type === "rectangle") {
+    drawRect(ctx, shape)
+  }
+
+}
+
 
 
 
