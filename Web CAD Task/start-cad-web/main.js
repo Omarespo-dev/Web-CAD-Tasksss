@@ -49,7 +49,24 @@ function drawPreview(ctx, shape) {
 
 }
 
+//Funzione Render per mostrare i Disegni sulla canvas
+function render() {
 
+  // Puliamo la canvas perché ogni aggiornamento richiede di ridisegnare tutto da zero
+  ctx.clearRect(0, 0, canvas.width, canvas.height)
+
+  //Disegnamo tutte le forme che stanno nello stato shapes ciclando
+  //e passando ogni singolo oggetto alla funzione drawShape
+  for (let i = 0; i < shapes.length; i++) {
+    drawShape(ctx, shapes[i])
+  }
+
+
+  //Condizione per gestire la forma temporanea(preview)
+  if(tempShape){
+    drawPreview(ctx,tempShape)
+  }
+}
 
 
 

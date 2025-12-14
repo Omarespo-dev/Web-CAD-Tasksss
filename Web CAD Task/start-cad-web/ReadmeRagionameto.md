@@ -12,6 +12,20 @@ L'obiettivo di questa task e quello di disegnare forme geometriche su una **canv
 
 ---
 
+### Che struttura sto seguendo?
+Sto separando il lavoro in due parti:
+
+* **Render-side (disegno)**: funzioni che trasformano lo stato in pixel sulla canvas
+  (`drawRect`, `drawShape`, `drawPreview`, `render`)✅
+
+* **Controller-side (logica)**: gestione degli eventi mouse e aggiornamento dello stato
+  (creazione forme con click+drag, selezione, spostamento, ecc.)
+
+In questa fase sto implementando solo una forma, il rettangolo, per costruire la logica di base del disegno e della preview. Una volta completato questo flusso, la stessa struttura verra estesa anche alla linea.
+
+---
+
+
 ## Cosa ho implementato io 
 
 ### 1) Stato dell’utente e gestione del disegno
@@ -21,7 +35,7 @@ Per gestire il disegno sul canvas ho aggiunto alcune variabili di stato che perm
 * `currentTool` indica quale strumento è selezionato (rettangolo, linea, ecc.).
 * `isDrawing` serve a capire se l’utente ha iniziato a disegnare e sta trascinando il mouse.
 * `startX` e `startY` salvano il punto iniziale del disegno, cioè dove avviene il primo click.
-* `tempShape` rappresenta la forma temporanea usata come preview durante il drag.
+* `tempShape` è l’oggetto “in costruzione” durante il drag, serve solo per la preview finché non rilasci il mouse, poi diventa una forma definitiva dentro shapes.
 
 La forma viene aggiunta all’array `shapes` solo quando l’utente termina il disegno.
 
@@ -38,7 +52,11 @@ La terza funzione e `drawPreview` e viene usato per disegnare la preview della f
 
 L’uso di `drawShape` e `drawPreview` non erano obbligatorie, ma le ho introdotte per organizzare meglio il codice e non appesantire la funzione di render che deve solo mostrare il risultato finale.
 
+## 3) Funzione di Render
+
+Ho implementato una funzione `render` perche la canvas non ha memoria delle forme disegnate. Ogni volta che aggiungo una nuova figura o modifico lo stato devo ridisegnare tutto leggendo l’array `shapes`. In questo modo posso visualizzare tutte le forme gia create insieme a quella nuova o alla preview, mantenendo il disegno sempre aggiornato.
 
 ---
+
 
 
