@@ -58,12 +58,29 @@ function drawLine(ctx, line) {
 //Funzione per gestire quale funzione di disegno chiamare in base all oggetto(Forma) che riceviamo in input 
 function drawShape(ctx, shape) {
 
+  //salva lo stato grafico attuale della canvas
+  ctx.save()
+
+  // evidenzio la forma selezionata
+  //verifica se questa shape è quella selezionata
+  if (shape === selectedShape) {
+    ctx.strokeStyle = "dodgerblue";
+    ctx.lineWidth = 2;
+  } else {
+    ctx.strokeStyle = "black";
+    ctx.lineWidth = 1;
+  }
+
+
   //Gestiamo la forma che riceviamo in input se e rettangolo la passiamo alla funzione specifica e stessa cosa vale se e una linea
   if (shape.type === "rectangle") {
     drawRect(ctx, shape)
   } else if (shape.type === "line") {
     drawLine(ctx, shape)
   }
+
+  //ripristina lo stile precedente
+  ctx.restore()
 
 }
 
@@ -199,11 +216,38 @@ function getShapeAt(px, py) {
 //1 Evento al primo click del mouse sulla canvas
 canvas.addEventListener("pointerdown", (e) => {
 
-  //verifico se non e selezionato nessun strumento
-  if (!currentTool) return
-
   // prendo la posizione del mouse nella canvas come oggetto
   const cord = getMousePosition(e)
+
+  // 1) prima provo a selezionare una shape già disegnata
+  const hit = getShapeAt(cord.x, cord.y);
+
+  //Se il click colpisce una forma
+  if (hit) {
+    // imposto la forma come selezionata
+    selectedShape = hit; 
+    
+    // aggiorno la canvas per mostrare l’evidenziazione
+    render();
+    
+    //esco non devo iniziare il disegno
+    return;                
+  }
+
+  //Se il click è su una zona vuota rimuovo la selezione
+  selectedShape = null;
+
+  // 2) Se non è attivo nessun tool di disegno,
+  //non posso iniziare a disegnare
+  if (!currentTool) {
+
+    // aggiorno la canvas per rimuovere l’evidenziazione
+    render();
+
+    return;
+  }
+
+  //3) se ho un tool attivo e ho cliccato sul vuoto, inizio il disegno
 
   //aggiorna variabile di stato(sto disegnando)
   isDrawing = true

@@ -15,7 +15,7 @@ Per l'esportazione in DXF, deve essere utilizzata la libreria "@tarikjabiri/dxf"
 2. Implementare almeno **due tipi di oggetti** (es. rettangolo e linea).✅
 3. L’utente deve poter:
    - Disegnare nuove entità sul canvas (click + drag).✅
-   - **Selezionare** un oggetto già disegnato.
+   - **Selezionare** un oggetto già disegnato.✅
    - **Spostare** un oggetto selezionato con il mouse.
 4. Alla pressione del pulsante **Esporta JSON**, deve essere generato un array con la lista delle forme e le loro proprietà, es:
    json

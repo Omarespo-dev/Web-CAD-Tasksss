@@ -19,7 +19,7 @@ Sto separando il lavoro in due parti:
   (`drawRect`, `drawShape`, `drawPreview`, `render`)✅
 
 * **Controller-side (logica)**: gestione degli eventi mouse e aggiornamento dello stato
-  (creazione forme con click+drag✅, selezione, spostamento, ecc.)
+  (creazione forme con click+drag✅, selezione✅, spostamento, ecc.)
 
 In questa fase sto implementando solo una forma, il rettangolo, per costruire la logica di base del disegno e della preview. Una volta completato questo flusso, la stessa struttura verra estesa anche alla linea.
 
@@ -116,3 +116,18 @@ Una volta definite le funzioni chiamate (hit-test) devo capire quale forma e sta
 
 Il controllo viene fatto dall ultima forma disegnata quindi nel for viene (i--), perche e la forma che si trova sopra alle altre, quindi dobbiamo ciclare al contrario, inoltre se trova la forma cliccata la ritorna altrimenti ritorna `null`
 
+--
+
+## 8) Gestione della selezione delle forme
+
+La funzione `drawShape` e stata estesa per gestire anche lo stato di selezione:
+se la forma da disegnare e quella attualmente selezionata,
+viene evidenziata graficamente cambiando stile di disegno
+(colore e spessore della linea).
+
+Se la forma non e selezionata, viene disegnata con lo stile di default.
+
+Inoltre la selezione viene gestita al click sulla canvas attarverso l evento `pointerdown` , se l utente clicca, viene prima verificato se il punto del mouse corrisponde a una forma gia disegnata.
+Se viene trovata una forma, questa viene impostata come selezionata e la canvas viene ridisegnata per mostre l'evidenziazione.
+
+Se invece il click viene fatto in una zona vuota allora la selezione corrente viene rimossa. In questo modo la selezione viene gestita in modo semplice
