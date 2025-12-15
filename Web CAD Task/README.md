@@ -16,8 +16,8 @@ Per l'esportazione in DXF, deve essere utilizzata la libreria "@tarikjabiri/dxf"
 3. L’utente deve poter:
    - Disegnare nuove entità sul canvas (click + drag).✅
    - **Selezionare** un oggetto già disegnato.✅
-   - **Spostare** un oggetto selezionato con il mouse.
-4. Alla pressione del pulsante **Esporta JSON**, deve essere generato un array con la lista delle forme e le loro proprietà, es:
+   - **Spostare** un oggetto selezionato con il mouse.✅
+4. Alla pressione del pulsante **Esporta JSON**, deve essere generato un array con la lista delle forme e le loro proprietà, es:✅
    json
    [
      { "type": "rectangle", "x": 10, "y": 20, "width": 100, "height": 50 },
@@ -29,10 +29,10 @@ Per l'esportazione in DXF, deve essere utilizzata la libreria "@tarikjabiri/dxf"
 ---
 
 ## Come lavorare
-1. Apri `index.html` in un browser.  
-2. Implementa la logica dentro `main.js`.  
-3. Verifica che sia possibile disegnare, selezionare e spostare le forme.  
-4. Premi **Esporta JSON** per ottenere la lista delle forme.  
+1. Apri `index.html` in un browser. ✅ 
+2. Implementa la logica dentro `main.js`.  ✅
+3. Verifica che sia possibile disegnare, selezionare e spostare le forme.  ✅
+4. Premi **Esporta JSON** per ottenere la lista delle forme.  ✅
 5. Premi **Esporta DXF** per scaricare un file DXF compatibile con AutoCAD.
 
 

@@ -6,9 +6,9 @@
 L'obiettivo di questa task e quello di disegnare forme geometriche su una **canvas HTML** e salvarle come **oggetti JavaScript** dentro un array (`shapes`). Inoltre bisogna implementare anche vari requisiti come: 
     1) Implementare almeno **due tipi di oggetti** (es. rettangolo e linea)✅
     2) Disegnare nuove entità sul canvas (click + drag + preview)✅
-    3) **Selezionare** un oggetto già disegnato
-    4) **Spostare** un oggetto selezionato con il mouse
-    5) Poi gestire l'esportazione (JSON / DXF)
+    3) **Selezionare** un oggetto già disegnato✅
+    4) **Spostare** un oggetto selezionato con il mouse✅
+    5) Poi gestire l'esportazione (JSON✅ / DXF)
 
 ---
 
@@ -19,7 +19,7 @@ Sto separando il lavoro in due parti:
   (`drawRect`, `drawShape`, `drawPreview`, `render`)✅
 
 * **Controller-side (logica)**: gestione degli eventi mouse e aggiornamento dello stato
-  (creazione forme con click+drag✅, selezione✅, spostamento, ecc.)
+  (creazione forme con click+drag✅, selezione✅, spostamento✅, ecc.)
 
 In questa fase sto implementando solo una forma, il rettangolo, per costruire la logica di base del disegno e della preview. Una volta completato questo flusso, la stessa struttura verra estesa anche alla linea.
 
@@ -116,7 +116,7 @@ Una volta definite le funzioni chiamate (hit-test) devo capire quale forma e sta
 
 Il controllo viene fatto dall ultima forma disegnata quindi nel for viene (i--), perche e la forma che si trova sopra alle altre, quindi dobbiamo ciclare al contrario, inoltre se trova la forma cliccata la ritorna altrimenti ritorna `null`
 
---
+---
 
 ## 8) Gestione della selezione delle forme
 
@@ -131,3 +131,23 @@ Inoltre la selezione viene gestita al click sulla canvas attarverso l evento `po
 Se viene trovata una forma, questa viene impostata come selezionata e la canvas viene ridisegnata per mostre l'evidenziazione.
 
 Se invece il click viene fatto in una zona vuota allora la selezione corrente viene rimossa. In questo modo la selezione viene gestita in modo semplice
+
+---
+
+## 9) Aggiunta dello spostamento della forma
+
+Ho implementato una funzione ch permette lo spostamento delle forme tramite trascinamento del mouse. Quando l utente clicca su una forma, questa viene selezionata e viene attivata la modalita di trascinamento.
+La funzione in questione e `moveShape`, che riceve una forma da spostare e lo spostamento del mouse espresso tramite le variazioni `dx e dy`. I valori `dx e dy` rappresentano rispettivamente lo spostamento orizzontale e verticale del mouse tra due eventi consecutivi. La funzione utilizza questi valori per aggiornare le coordinate della forma.
+
+Nel caso di un rettangolo vengono incrementate le coordinate x e y, mentre nel caso di una linea vengono aggiornate entrambe le estremità aggiungendo dx e dy a ciascun punto. In questo modo la forma viene traslata mantenendo invariata la propria struttura.
+
+
+--CONTINUO..
+Inoltre lo spostamento e gestito attraverso gli eventi `pointerdown`, `pointermove` e `pointerup`, utilizzando una variabile di stato `(isDragging)` per capire quando l’utente sta effettivamente trascinando una forma.
+
+Nel `pointerDown` se il click colipsci una forma, questa viene impostata come selezionata, viene attivato il trascimaneto e viene salvata la posizione iniziale del mouse. In questo modo non apre il disegno di una nuova form
+
+Nel `pointerMove` se il trascimaneto e attivo si calcola di quanto il mouse si e spostato rispetto alla posizione precedente.E questo viene applicato tramite la funzione `moveShape`
+
+Infine nel `pointerUp` il trascinamento viene terminato distattivando la modalita di drag
+

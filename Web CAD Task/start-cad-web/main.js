@@ -1,6 +1,17 @@
+
+// ===============================
+// SETUP CANVAS
+// ===============================
+
 //Ricaviamoci il tag canvas dall Html e prendiamo il context per avere gli strumenti per gestire la canvas
 let canvas = document.getElementById("canvas");
 let ctx = canvas.getContext("2d");
+
+
+
+// ===============================
+// STATO APPLICAZIONE
+// ===============================
 
 //Stato principale dove contengono tutte le forme come oggetti
 let shapes = [];
@@ -22,6 +33,10 @@ let lastY = 0
 
 
 
+// ===============================
+// TOOLBAR / UI
+// ===============================
+
 // Qui gestisco i pulsanti della toolbar per cambiare le varie forme di disegno
 // e per gestire l esportazione del JSON
 document.getElementById("rectBtn").addEventListener("click", () => currentTool = "rectangle");
@@ -32,7 +47,9 @@ document.getElementById("exportJSONBtn").addEventListener("click", () => {
 
 
 
-//Iniziamo ad implementare le Funzioni di Disegno
+// ===============================
+// FUNZIONI DI DISEGNO
+// ===============================
 
 //Funzione per Disegnare il rettangolo dato in input un oggetto rettangolo e dare in output il disegno effettivo in pixel sulla canvas
 function drawRect(ctx, rect) {
@@ -136,6 +153,11 @@ function getMousePosition(e) {
 
 }
 
+// ===============================
+// HIT TEST E SELEZIONE
+// ===============================
+
+
 //Funzione per capire se un punto(mouse) e dentro un rettangolo
 function hitRect(rect, px, py) {
 
@@ -210,7 +232,41 @@ function getShapeAt(px, py) {
 }
 
 
+// ===============================
+// SPOSTAMENTO DELLE FORME
+// ===============================
 
+//Questa funzione serve a spostare una forma sullo schermo => shape = la forma da spostare (rettangolo o linea)
+// dx = quanto il mouse si è spostato in orizzontale
+// dy = quanto il mouse si è spostato in verticale
+function moveShape(shape, dx, dy) {
+
+  //se la forma è un rettangolo
+  if (shape.type === "rectangle") {
+
+    //sposto il rettangolo a destra/sinistra
+    shape.x = shape.x + dx;
+
+    //sposto il rettangolo in alto/basso
+    shape.y = shape.y + dy;
+  }
+
+  // ALTRIMENTI se la forma è una linea
+  else if (shape.type === "line") {
+
+    //sposto il punto di inizio della linea
+    shape.x1 = shape.x1 + dx;
+    shape.y1 = shape.y1 + dy;
+
+    //sposto il punto di fine della linea
+    shape.x2 = shape.x2 + dx;
+    shape.y2 = shape.y2 + dy;
+  }
+}
+
+// ===============================
+// EVENTI CANVAS
+// ==============================
 
 //Iniziamo a gestire gli eventi del mouse catturati dall utente
 //1 Evento al primo click del mouse sulla canvas
@@ -225,13 +281,20 @@ canvas.addEventListener("pointerdown", (e) => {
   //Se il click colpisce una forma
   if (hit) {
     // imposto la forma come selezionata
-    selectedShape = hit; 
-    
+    selectedShape = hit;
+
+    //attivo la modalità trascinamento (drag)
+    isDragging = true;
+
+    //salvo la posizione iniziale del mouse: mi serve per calcolare dx e dy
+    lastX = cord.x;
+    lastY = cord.y;
+
     // aggiorno la canvas per mostrare l’evidenziazione
     render();
-    
+
     //esco non devo iniziare il disegno
-    return;                
+    return;
   }
 
   //Se il click è su una zona vuota rimuovo la selezione
@@ -260,6 +323,25 @@ canvas.addEventListener("pointerdown", (e) => {
 
 //2 Evento movimento mouse dopo aver Cliccato per mostrare la preview
 canvas.addEventListener("pointermove", (e) => {
+  
+  // Se sto trascinando una forma selezionata, la sposto
+  if (isDragging && selectedShape) {
+    const cord = getMousePosition(e);
+
+    //calcolo di quanto il mouse si è mosso rispetto all'ultima posizione
+    const dx = cord.x - lastX;
+    const dy = cord.y - lastY;
+
+    //applico lo spostamento alla forma selezionata
+    moveShape(selectedShape, dx, dy);
+
+    //aggiorno la posizione del mouse per il prossimo movimento
+    lastX = cord.x;
+    lastY = cord.y;
+
+    render();
+    return; // importantissimo: non faccio preview disegno
+  }
 
   //se non sta disegnando esci
   if (!isDrawing) return
@@ -301,6 +383,11 @@ canvas.addEventListener("pointermove", (e) => {
 //3 Evento per catturare il momento in cui stacchiamo il mouse
 canvas.addEventListener("pointerup", () => {
 
+  // Se stavo trascinando una forma, termino lo spostamento
+  if (isDragging) {
+    isDragging = false;
+    return;
+  }
   //verifico se non si sta disegnado
   if (!isDrawing) return
 
@@ -338,14 +425,3 @@ document.getElementById("exportDXFBtn").addEventListener("click", () => {
 });
 
 
-
-
-
-
-
-// Scrivere la logica per:
-// 1. Disegnare forme sul canvas
-// 2. Selezionare e spostare forme già disegnate
-// 3. Aggiornare il canvas in modo dinamico
-// 4. Salvare le forme in `shapes` con le proprietà necessarie
-// 4. Generare ed esportare il file del disegno in formato DXF
