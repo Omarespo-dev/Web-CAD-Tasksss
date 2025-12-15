@@ -4,7 +4,7 @@
 ## Obiettivo
 
 L'obiettivo di questa task e quello di disegnare forme geometriche su una **canvas HTML** e salvarle come **oggetti JavaScript** dentro un array (`shapes`). Inoltre bisogna implementare anche vari requisiti come: 
-    1) Implementare almeno **due tipi di oggetti** (es. rettangolo e linea)
+    1) Implementare almeno **due tipi di oggetti** (es. rettangolo e linea)✅
     2) Disegnare nuove entità sul canvas (click + drag + preview)✅
     3) **Selezionare** un oggetto già disegnato
     4) **Spostare** un oggetto selezionato con il mouse
@@ -83,3 +83,17 @@ Dopo ogni aggiornamento richiamo la funzione render perche la canvas non mantien
 
 In `pointerup` gestisco la conferma del disegno salvando la preview nell arr shapes e richiamo nuovamente render per aggiornare la canvas con lo stato finale.
 
+---
+
+## 6) Aggiunta Forma linea
+
+Ho aggiunto una seconda forma (linea) mantenendo la stessa struttura usata per il rettangolo.
+
+-L evento `pointerdown` non cambia, perche mi serve solo a salvare il punto iniziale (startX/startY) e ad attivare `isDrawing`, quindi funziona per qualsiasi forma.
+
+- In `pointermove` ho aggiunto un controllo su `currentTool === "line"` e creo una `tempShape` di tipo line con `x1,y1` come punto di partenza e `x2,y2` come posizione corrente del mouse, cosi posso avere la preview durante il drag.
+
+- In `pointerup` non cambia nulla: la preview viene salvata in `shapes` come forma definitiva e viene fatto render finale.
+
+
+Per disegnare la linea ho aggiunto `drawLine` e ho esteso `drawShape` per gestire anche `type: "line"`.

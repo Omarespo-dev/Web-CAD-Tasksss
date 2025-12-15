@@ -31,13 +31,30 @@ function drawRect(ctx, rect) {
   ctx.strokeRect(rect.x, rect.y, rect.width, rect.height)
 }
 
+//Funzione per Disegnare la linea 
+function drawLine(ctx, line) {
+
+  // inizia un nuovo percorso
+  ctx.beginPath()
+
+  //indica il punto di partenza della linea
+  ctx.moveTo(line.x1, line.y1)
+  //disegna la linea fino al punto finale
+  ctx.lineTo(line.x2, line.y2)
+
+  // disegna la linea sul canvas
+  ctx.stroke()
+}
+
 
 //Funzione per gestire quale funzione di disegno chiamare in base all oggetto(Forma) che riceviamo in input 
 function drawShape(ctx, shape) {
 
-  //Gestiamo la forma che riceviamo in input se e rettangolo la passiamo alla funzione specifica
+  //Gestiamo la forma che riceviamo in input se e rettangolo la passiamo alla funzione specifica e stessa cosa vale se e una linea
   if (shape.type === "rectangle") {
     drawRect(ctx, shape)
+  }else if(shape.type === "line"){
+    drawLine(ctx, shape)
   }
 
 }
@@ -100,8 +117,8 @@ function getMousePosition(e) {
 //1 Evento al primo click del mouse sulla canvas
 canvas.addEventListener("pointerdown", (e) => {
 
-  //verifico se e un rettangolo altrimenti esci
-  if (currentTool !== "rectangle") return
+  //verifico se non e selezionato nessun strumento
+  if (!currentTool) return
 
   // prendo la posizione del mouse nella canvas come oggetto
   const cord = getMousePosition(e)
@@ -109,7 +126,7 @@ canvas.addEventListener("pointerdown", (e) => {
   //aggiorna variabile di stato(sto disegnando)
   isDrawing = true
 
-  //imposto i valori di x e y di partenza del rettangolo
+  // imposto i valori di x e y di partenza della forma
   startX = cord.x
   startY = cord.y
 
@@ -124,16 +141,27 @@ canvas.addEventListener("pointermove", (e) => {
   //prendo la posizione del mouse nella canvas come oggetto
   const cord = getMousePosition(e)
 
-  //prendo l'angolo in alto a sinistra del rettangolo, indipendentemente dalla direzione del drag
-  const x = Math.min(startX, cord.x)
-  const y = Math.min(startY, cord.y)
+  //verifico se currentTooll e un rettangolo
+  if (currentTool === "rectangle") {
+    //prendo l'angolo in alto a sinistra del rettangolo, indipendentemente dalla direzione del drag
+    const x = Math.min(startX, cord.x)
+    const y = Math.min(startY, cord.y)
 
-  //calcolo larghezza e altezza come distanza dal punto iniziale
-  const width = Math.abs(cord.x - startX)
-  const height = Math.abs(cord.y - startY)
+    //calcolo larghezza e altezza come distanza dal punto iniziale
+    const width = Math.abs(cord.x - startX)
+    const height = Math.abs(cord.y - startY)
 
-  //Salviamo la forma temporanea della preview
-  tempShape = { type: "rectangle", x, y, width, height }
+    //Salviamo la forma temporanea della preview
+    tempShape = { type: "rectangle", x, y, width, height }
+  }
+
+  //verifico se currentTool e una linea
+  if (currentTool === "line") {
+
+    //salviamo la forma temporanea nella preview
+    tempShape = { type: "line", x1: startX, y1: startY, x2: cord.x, y2: cord.y }
+  }
+
 
   //ridisegno tutta la canvas per mostrare la preview aggiornata
   render()
@@ -166,7 +194,7 @@ canvas.addEventListener("pointerup", () => {
 
   //Debug per vedere oggetto pushano
   console.log(shapes);
-  
+
 })
 
 
