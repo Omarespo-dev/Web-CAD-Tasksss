@@ -5,7 +5,7 @@
 
 L'obiettivo di questa task e quello di disegnare forme geometriche su una **canvas HTML** e salvarle come **oggetti JavaScript** dentro un array (`shapes`). Inoltre bisogna implementare anche vari requisiti come: 
     1) Implementare almeno **due tipi di oggetti** (es. rettangolo e linea)
-    2) Disegnare nuove entità sul canvas (click + drag + preview)
+    2) Disegnare nuove entità sul canvas (click + drag + preview)✅
     3) **Selezionare** un oggetto già disegnato
     4) **Spostare** un oggetto selezionato con il mouse
     5) Poi gestire l'esportazione (JSON / DXF)
@@ -19,7 +19,7 @@ Sto separando il lavoro in due parti:
   (`drawRect`, `drawShape`, `drawPreview`, `render`)✅
 
 * **Controller-side (logica)**: gestione degli eventi mouse e aggiornamento dello stato
-  (creazione forme con click+drag, selezione, spostamento, ecc.)
+  (creazione forme con click+drag✅, selezione, spostamento, ecc.)
 
 In questa fase sto implementando solo una forma, il rettangolo, per costruire la logica di base del disegno e della preview. Una volta completato questo flusso, la stessa struttura verra estesa anche alla linea.
 
