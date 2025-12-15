@@ -14,6 +14,16 @@ let startY = 0;
 let tempShape = null;
 
 
+// Qui gestisco i pulsanti della toolbar per cambiare le varie forme di disegno
+// e per gestire l esportazione del JSON
+document.getElementById("rectBtn").addEventListener("click", () => currentTool = "rectangle");
+document.getElementById("lineBtn").addEventListener("click", () => currentTool = "line");
+document.getElementById("exportJSONBtn").addEventListener("click", () => {
+  document.getElementById("output").textContent = JSON.stringify(shapes, null, 2);
+});
+
+
+
 //Iniziamo ad implementare le Funzioni di Disegno
 
 //Funzione per Disegnare il rettangolo dato in input un oggetto rettangolo e dare in output il disegno effettivo in pixel sulla canvas
@@ -66,7 +76,7 @@ function render() {
   if (tempShape) {
     drawPreview(ctx, tempShape)
   }
-  
+
 }
 
 
@@ -86,14 +96,78 @@ function getMousePosition(e) {
 
 
 
+//Iniziamo a gestire gli eventi del mouse catturati dall utente
+//1 Evento al primo click del mouse sulla canvas
+canvas.addEventListener("pointerdown", (e) => {
+
+  //verifico se e un rettangolo altrimenti esci
+  if (currentTool !== "rectangle") return
+
+  // prendo la posizione del mouse nella canvas come oggetto
+  const cord = getMousePosition(e)
+
+  //aggiorna variabile di stato(sto disegnando)
+  isDrawing = true
+
+  //imposto i valori di x e y di partenza del rettangolo
+  startX = cord.x
+  startY = cord.y
+
+})
+
+//2 Evento movimento mouse dopo aver Cliccato per mostrare la preview
+canvas.addEventListener("pointermove", (e) => {
+
+  //se non sta disegnando esci
+  if (!isDrawing) return
+
+  //prendo la posizione del mouse nella canvas come oggetto
+  const cord = getMousePosition(e)
+
+  //prendo l'angolo in alto a sinistra del rettangolo, indipendentemente dalla direzione del drag
+  const x = Math.min(startX, cord.x)
+  const y = Math.min(startY, cord.y)
+
+  //calcolo larghezza e altezza come distanza dal punto iniziale
+  const width = Math.abs(cord.x - startX)
+  const height = Math.abs(cord.y - startY)
+
+  //Salviamo la forma temporanea della preview
+  tempShape = { type: "rectangle", x, y, width, height }
+
+  //ridisegno tutta la canvas per mostrare la preview aggiornata
+  render()
+
+  //Debug per vedere l oggetto preview in tempo reale
+  console.log(tempShape);
+})
 
 
 
-document.getElementById("rectBtn").addEventListener("click", () => currentTool = "rectangle");
-document.getElementById("lineBtn").addEventListener("click", () => currentTool = "line");
-document.getElementById("exportJSONBtn").addEventListener("click", () => {
-  document.getElementById("output").textContent = JSON.stringify(shapes, null, 2);
-});
+//3 Evento per catturare il momento in cui stacchiamo il mouse
+canvas.addEventListener("pointerup", () => {
+
+  //verifico se non si sta disegnado
+  if (!isDrawing) return
+
+  //Impostiamo la variabile isDrawing a false perche in questo caso stiamo rilasciando il mouse per salavare quella forma
+  isDrawing = false
+
+  //Verifico se esiste una preview la pusho nell arr shapes
+  if (tempShape) {
+    shapes.push(tempShape)
+  }
+
+  //svuotiamo la preview
+  tempShape = null
+
+  //Ridisegnamo la canvas per per mostrare lo stato finale senza preview 
+  render()
+
+  //Debug per vedere oggetto pushano
+  console.log(shapes);
+  
+})
 
 
 

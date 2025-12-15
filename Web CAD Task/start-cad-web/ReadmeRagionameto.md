@@ -60,7 +60,7 @@ Ho implementato una funzione `render` perche la canvas non ha memoria delle form
 
 ---
 
-## 3) Funzione per traddure le coordinate del mouse della finestra Browser in canvas
+## 4) Funzione per traddure le coordinate del mouse della finestra Browser in canvas
 
 Ho implementato una funzione getMousePosition per gestire le coordinate del mouse sulla canvas.
 Il motivo per cui l ho fatta e perche gli eventi del mouse restituiscono le coordinate rispetto alla finestra del browser, mentre il canvas e solo una porzione della pagina.
@@ -68,4 +68,18 @@ Il motivo per cui l ho fatta e perche gli eventi del mouse restituiscono le coor
 Questa funzione prende l evento del mouse e restituisce le coordinate x e y relative alla canvas.
 In questo modo posso ottenere le coordinate corrette da usare nei controller del mouse, cioe negli eventi di click, movimento e rilascio.
 
+---
+
+
+## 5) Controllers del Mouse
+
+Per gestire il disegno sulla canvas utilizzo tre eventi del mouse: `pointerdown`, `pointermove` e `pointerup`.
+In questo modo separo l inizio del disegno, l aggiornamento in tempo reale con la preview e la fine dell operazione.
+
+In `pointerdown` inizializzo lo stato salvando il punto di partenza e attivando isDrawing cosi i movimenti successivi vengono interpretati come se stessi disegnando.
+
+In `pointermove` aggiorno una variabile temporanea `tempShape` perche in questa fase non devo salvare la forma definitiva dentro shapes ma semplicemente gestire la preview.
+Dopo ogni aggiornamento richiamo la funzione render perche la canvas non mantiene stato e deve essere ridisegnata per mostrare i cambiamenti altrimenti la preview non verrebbe visualizzata.
+
+In `pointerup` gestisco la conferma del disegno salvando la preview nell arr shapes e richiamo nuovamente render per aggiornare la canvas con lo stato finale.
 
