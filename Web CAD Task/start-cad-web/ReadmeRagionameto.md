@@ -97,3 +97,22 @@ Ho aggiunto una seconda forma (linea) mantenendo la stessa struttura usata per i
 
 
 Per disegnare la linea ho aggiunto `drawLine` e ho esteso `drawShape` per gestire anche `type: "line"`.
+
+---
+
+## 7) Aggiunte Funzioni per capire se clicco dentro una forma (Hit-test)
+
+Quando l utente clicca sulla canvas, il browser mi da solo un punto(px,py) cioe le coordinate del mouse. Per poter selezionare  per poi spostare una forma gia disegnata devo capire: se quel punto sta dentr un rettangolo e se quel punto e quasi vicino alla linea disegnata.
+
+Per questo Ho implementato diverse funzioni 
+
+La funzione `hitRect` ci serve per capire se il punto del mouse e dentro al rettangolo,quindi dobbiamo fare un controlle su px e py e ritorna o `true` o `false`
+
+La funzione `distancePointToSegment` ci serve per calcolare la distanza minima tra il mouse e un segmento di linea, questo lo facciamo perche la linea non ha area e quindi non posso verificare se effetivamente sto cliccando quella linea oppure no. Infine la funzione ritorna un numero che sarebbe la distanza in pixel
+
+La funzione `hitLine` ci serve per capire se il mouse e vicino alla linea,avendo una tolleranza e usando anche la funzione `distancePointToSegment`. Se la distanza e <= tolleranza, la linea e cliccata e la funzione ritorna o `true` o `false`
+
+Una volta definite le funzioni chiamate (hit-test) devo capire quale forma e stata cliccata e per farlo mi serve una funzione `getShapeAt` che socrre l arr `shapes` e controlla ogni forma usando `hitRect` o `hitLine` in base al tipo di forma.
+
+Il controllo viene fatto dall ultima forma disegnata quindi nel for viene (i--), perche e la forma che si trova sopra alle altre, quindi dobbiamo ciclare al contrario, inoltre se trova la forma cliccata la ritorna altrimenti ritorna `null`
+

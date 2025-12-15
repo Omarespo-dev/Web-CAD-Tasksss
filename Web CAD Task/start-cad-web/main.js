@@ -14,6 +14,14 @@ let startY = 0;
 let tempShape = null;
 
 
+//Aggiunta delle variabili di stato per gestire selezione e spostamento delle forme
+let selectedShape = null
+let isDragging = false
+let lastX = 0
+let lastY = 0
+
+
+
 // Qui gestisco i pulsanti della toolbar per cambiare le varie forme di disegno
 // e per gestire l esportazione del JSON
 document.getElementById("rectBtn").addEventListener("click", () => currentTool = "rectangle");
@@ -53,7 +61,7 @@ function drawShape(ctx, shape) {
   //Gestiamo la forma che riceviamo in input se e rettangolo la passiamo alla funzione specifica e stessa cosa vale se e una linea
   if (shape.type === "rectangle") {
     drawRect(ctx, shape)
-  }else if(shape.type === "line"){
+  } else if (shape.type === "line") {
     drawLine(ctx, shape)
   }
 
@@ -110,6 +118,80 @@ function getMousePosition(e) {
   }
 
 }
+
+//Funzione per capire se un punto(mouse) e dentro un rettangolo
+function hitRect(rect, px, py) {
+
+  //ritorna true se tutte le condizioni sono vere
+  return (
+    //il mouse è tra il lato sinistro e destro
+    px >= rect.x &&
+    px <= rect.x + rect.width &&
+
+    //il mouse è tra il lato alto e basso
+    py >= rect.y &&
+    py <= rect.y + rect.height
+  );
+}
+
+//Funzione per calcolare la distanza minima tra il punto del mouse e il segmento della linea , serve per essere precisi nel selezionare la linea
+function distancePointToSegment(px, py, x1, y1, x2, y2) {
+
+  //differenza tra inizio e fine linea
+  const dx = x2 - x1;
+  const dy = y2 - y1;
+
+  //lunghezza della linea (al quadrato)
+  const len2 = dx * dx + dy * dy;
+
+  //se la linea è solo un punto
+  if (len2 === 0) return Math.hypot(px - x1, py - y1);
+
+  //calcola il punto della linea più vicino al mouse
+  let t = ((px - x1) * dx + (py - y1) * dy) / len2;
+
+  //limita il punto dentro la linea
+  t = Math.max(0, Math.min(1, t));
+
+  //coordinate del punto più vicino
+  const projX = x1 + t * dx;
+  const projY = y1 + t * dy;
+
+  //distanza finale mouse - linea
+  return Math.hypot(px - projX, py - projY);
+}
+
+
+//Funzione per capire se un punto e dentro la linea 
+function hitLine(line, px, py, tolerance = 6) {
+
+  //Calcolo la distanza minima tra il punto del mouse e il segmento della linea
+  const d = distancePointToSegment(px, py, line.x1, line.y1, line.x2, line.y2);
+
+  //se la distanza è piccola abbastanza, la linea è selezionata
+  return d <= tolerance;
+}
+
+
+
+//Funzione che scorre shapes per trovare la forma cliccata dal mouse
+function getShapeAt(px, py) {
+
+  //controlla le forme partendo dall'ultima disegnata
+  for (let i = shapes.length - 1; i >= 0; i--) {
+    const s = shapes[i];
+
+    //se è un rettangolo e il mouse è dentro ritorna rettangolo
+    if (s.type === "rectangle" && hitRect(s, px, py)) return s;
+
+    // se è una linea e il mouse è vicino ritorna linea
+    if (s.type === "line" && hitLine(s, px, py)) return s;
+  }
+
+  //nessuna forma trovata
+  return null;
+}
+
 
 
 
