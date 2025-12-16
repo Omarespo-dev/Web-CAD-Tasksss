@@ -8,7 +8,7 @@ L'obiettivo di questa task e quello di disegnare forme geometriche su una **canv
     2) Disegnare nuove entità sul canvas (click + drag + preview)✅
     3) **Selezionare** un oggetto già disegnato✅
     4) **Spostare** un oggetto selezionato con il mouse✅
-    5) Poi gestire l'esportazione (JSON✅ / DXF)
+    5) Poi gestire l'esportazione (JSON✅ / DXF✅)
 
 ---
 
@@ -151,3 +151,12 @@ Nel `pointerMove` se il trascimaneto e attivo si calcola di quanto il mouse si e
 
 Infine nel `pointerUp` il trascinamento viene terminato distattivando la modalita di drag
 
+## 10) Aggiunta Esportazione DXF
+
+Per implementare l'esportazione per file DXF(file di testo usato per AutoCad) è stata utilizzata la libreria `@tarikjabiri/dxf`. Per utlizzare questa libreria avevo due opzioni o importare la libreria dal CDN oppure inizializzare un progetto `npm init` e installare le varie dipendenze, per mantenere il progetto semplice e coerente ho voluto fare il metodo CDN.
+
+Inoltre l'esportazione e gestita tramite il pulsante Esporta DXF. Dove alla pressione del pulsante viene prima generato il file  DXF => da cui viene creato un oggetto `DxfWriter` e scorrendo l array shapes, ogni forma disegnata viene convertita in DXF.
+
+Successivamente il contenuto DXF viene convertito in un file scaricabile tramite browser, creando un `Blob`(file temporaneo nel browser) e forzando il download.
+
+Per concludere ho anche verificato il file DXF su AutocadWeb per assicurarmi che l esportazione funzionasse correttamente 

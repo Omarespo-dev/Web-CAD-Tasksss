@@ -1,4 +1,8 @@
 
+//import libreria 
+import { DxfWriter, point2d, point3d, LWPolylineFlags } from "https://cdn.skypack.dev/@tarikjabiri/dxf";
+
+
 // ===============================
 // SETUP CANVAS
 // ===============================
@@ -333,7 +337,7 @@ canvas.addEventListener("pointerdown", (e) => {
 
 //2 Evento movimento mouse dopo aver Cliccato per mostrare la preview
 canvas.addEventListener("pointermove", (e) => {
-  
+
   // Se sto trascinando una forma selezionata, la sposto
   if (isDragging && selectedShape) {
     const cord = getMousePosition(e);
@@ -385,7 +389,7 @@ canvas.addEventListener("pointermove", (e) => {
   render()
 
   //Debug per vedere l oggetto preview in tempo reale
-  console.log(tempShape);
+  // console.log(tempShape);
 })
 
 
@@ -416,7 +420,7 @@ canvas.addEventListener("pointerup", () => {
   render()
 
   //Debug per vedere oggetto pushano
-  console.log(shapes);
+  // console.log(shapes);
 
 })
 
@@ -427,10 +431,58 @@ canvas.addEventListener("pointerup", () => {
 // Esportazione DXF
 document.getElementById("exportDXFBtn").addEventListener("click", () => {
 
-  /** genera file DXF */
+  /*********** genera file DXF ***********/
+
+  // creo l'oggetto DXF
+  const dxf = new DxfWriter();
+
+  // scorro tutte le forme disegnate
+  for (let i = 0; i < shapes.length; i++) {
+
+    const s = shapes[i];
+
+    // se la forma è una linea
+    if (s.type === "line") {
+      dxf.addLine(
+        point3d(s.x1, canvas.height - s.y1, 0),
+        point3d(s.x2, canvas.height - s.y2, 0)
+      );
+    }
+
+    // se la forma è un rettangolo
+    if (s.type === "rectangle") {
+
+      // creo i 4 vertici del rettangolo
+      const vertices = [
+        { point: point2d(s.x, canvas.height - s.y) },
+        { point: point2d(s.x + s.width, canvas.height - s.y) },
+        { point: point2d(s.x + s.width, canvas.height - (s.y + s.height)) },
+        { point: point2d(s.x, canvas.height - (s.y + s.height)) },
+      ];
+
+      dxf.addLWPolyline(vertices, { flags: LWPolylineFlags.Closed });
+    }
+  }
+
+  /************* scarica file DXF ************/
 
 
-  /** scarica file DXF*/
+  // converto il DXF in testo
+  const content = dxf.stringify();
+
+  // creo il file scaricabile
+  const blob = new Blob([content], { type: "application/dxf" });
+  const url = URL.createObjectURL(blob);
+
+  // forzo il download del file
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "export.dxf";
+  a.click();
+
+  // pulizia della memoria
+  URL.revokeObjectURL(url);
+
 
 });
 

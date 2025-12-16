@@ -23,7 +23,7 @@ Per l'esportazione in DXF, deve essere utilizzata la libreria "@tarikjabiri/dxf"
      { "type": "rectangle", "x": 10, "y": 20, "width": 100, "height": 50 },
      { "type": "line", "x1": 30, "y1": 40, "x2": 120, "y2": 60 }
    ]
-5. Alla pressione del pulsante **Esporta DXF** deve essere generato un file DXF scaricabile compatibile con AutoCAD.
+5. Alla pressione del pulsante **Esporta DXF** deve essere generato un file DXF scaricabile compatibile con AutoCAD.✅
 
 
 ---
@@ -33,7 +33,7 @@ Per l'esportazione in DXF, deve essere utilizzata la libreria "@tarikjabiri/dxf"
 2. Implementa la logica dentro `main.js`.  ✅
 3. Verifica che sia possibile disegnare, selezionare e spostare le forme.  ✅
 4. Premi **Esporta JSON** per ottenere la lista delle forme.  ✅
-5. Premi **Esporta DXF** per scaricare un file DXF compatibile con AutoCAD.
+5. Premi **Esporta DXF** per scaricare un file DXF compatibile con AutoCAD.✅
 
 
 ## Materiale fornito
