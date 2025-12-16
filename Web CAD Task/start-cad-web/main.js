@@ -45,6 +45,16 @@ document.getElementById("exportJSONBtn").addEventListener("click", () => {
   document.getElementById("output").textContent = JSON.stringify(shapes, null, 2);
 });
 
+//svuota canvas con anche le sue variabili di stato e aggiorniamo il render cosi da sincronizzare lo stato con il disegno
+document.getElementById("clearCanvas").addEventListener("click", () => {
+  shapes = [];
+  selectedShape = null;
+  tempShape = null;
+  isDrawing = false;
+  isDragging = false;
+  render();
+});
+
 
 
 // ===============================
